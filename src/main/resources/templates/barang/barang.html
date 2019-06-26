@@ -2,9 +2,49 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
+
 <title>Insert title here</title>
+<link rel= "stylesheet" href="../styles/css/bootstrap.min.css"/>
+<script type="text/javascript" src ="../script/jquery-3.4.1.min.js"></script>
 </head>
 <body>
 	Halaman Barang
+	<br>
+	<button class="btn btn-succes">Create New</button>
+	<br>
+	<!-- Tempat untuk jahit tabel -->
+	<div id="idDivTableBarang">
+	</div>
+	
+	<script type="text/javascript">
+	$(document).ready(function(){
+		debugger;
+		
+		$.ajax({
+			url: './listbarang',
+			method:'Get',
+			success:function(model){
+				$('#idDivTableBarang').html(model);
+			},
+			error:function (model){
+			}
+		});
+		$('#idBtnNewBarang').modal('show');
+		
+		/* panggil url tambah barang menggunakan ajax */
+		$.ajax({
+			url:'./NewBarang',
+			method:'Get',
+			success: function (){
+				debugger;
+// 				jahit model return dari controller ke body modal
+			},
+			error: function (model){
+				debugger;
+			}
+		});
+		
+	});
+	</script>
 </body>
 </html>

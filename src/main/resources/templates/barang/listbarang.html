@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<div class = "table-responsive">
+	<table class = "table">
+		<thead>
+			<tr>
+			 	<td>No</td>
+			 	<td>Nama</td>
+			 	<td>Kota</td>
+			 	<td>Harga</td>
+			 	<td>Action</td>
+			</tr>
+		</thead>
+		<tbody id = "idTblBarang">
+		<tr th:each="item : ${keybarang}">
+			<td th:text="${item.id}">idBarang</td>
+			<td th:text="${item.namabarang}">Nama</td>
+			<td th:text="${item.kotapembuat}">kotaPembuat</td>
+			<td th:text="${item.hargabarang}">hargaBarang</td>
+			<td>
+			<button class="btn btn-primary">
+			<span class = "glyphicon glyphicon-search"></span>
+			</button>
+			<button class="btn btn-warning">
+			<span class = "glyphicon glyphicon-pencil"></span>
+			</button>
+			<button class="btn btn-danger">
+			<span class = "glyphicon glyphicon-trash"></span> Hapus
+			</button>
+								  
+			</td>
+		
+		</tr>
+		</tbody>
+	</table>
+	</div>
+</body>
+</html>
