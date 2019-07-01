@@ -11,6 +11,7 @@
 			<tr>
 			 	<td>No</td>
 			 	<td>Nama</td>
+			 	<td>Jumlah</td>
 			 	<td>Kota</td>
 			 	<td>Harga</td>
 			 	<td>Action</td>
@@ -20,24 +21,183 @@
 		<tr th:each="item : ${keybarang}">
 			<td th:text="${item.id}">idBarang</td>
 			<td th:text="${item.namabarang}">Nama</td>
+			<td th:text="${item.jmlbarang}">Jumlah</td>
 			<td th:text="${item.kotapembuat}">kotaPembuat</td>
 			<td th:text="${item.hargabarang}">hargaBarang</td>
 			<td>
 			<button class="btn btn-primary">
-			<span class = "glyphicon glyphicon-search"></span>
+			<span class = "glyphicon glyphicon-search"></span>Details
 			</button>
-			<button class="btn btn-warning">
-			<span class = "glyphicon glyphicon-pencil"></span>
+			<button  class="btn btn-warning clBtnEdit"  th:data.id="${item.id}" th:data.nmbarang="${item.namabarang}" th:data.jmlbarang="${item.jmlbarang}" th:data.jnsbarang="${item.jenisbarang}" th:data.kota="${item.kotapembuat}"th:data.hrgbarang="${item.hargabarang}">
+			<span class = "glyphicon glyphicon-pencil"></span>Edit
 			</button>
-			<button class="btn btn-danger">
-			<span class = "glyphicon glyphicon-trash"></span> Hapus
+			<button class="btn btn-danger clBtnDelete" th:data.id="${item.id}" th:data.nmbarang="${item.namabarang}" th:data.jmlbarang="${item.jmlbarang}" th:data.jnsbarang="${item.jenisbarang}" th:data.kota="${item.kotapembuat}"th:data.hrgbarang="${item.hargabarang}">
+			<span class = "glyphicon glyphicon-trash"></span> Delete
 			</button>
-								  
+							  
 			</td>
 		
 		</tr>
 		</tbody>
 	</table>
 	</div>
+	
+	<div id="idModalEdit" class="modal fade" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title">Masukan Data Barang</h4>
+				</div>
+				<div id="idMdlBodyEdit" class="modal-body">
+					<form class="form-horizontal" id="idFrmEditBarang" name="{barang}"
+						th:object="${barang}">
+						<div class="form-group">
+							<label for="namabarang" class="col-sm-2 control-label">Nama</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="editnamabarang"
+									name="namabarang" placeholder=data.nmbarang>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="id" class="col-sm-2 control-label">No</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="editidbarang"
+									name="id" placeholder=data.id>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="jmlbarang" class="col-sm-2 control-label">Jumlah</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="editjmlbarang"
+									name="jmlbarang" placeholder=data.jmlbarang>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="kotapembuat" class="col-sm-2 control-label">Kota</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="editkotapembuat"
+									name="kotapembuat" placeholder=data.kota>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="jenisbarang" class="col-sm-2 control-label">Jenis</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="editjenisbarang"
+									name="jenisbarang" placeholder=data.jnsbarang>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="hargabarang" class="col-sm-2 control-label">Harga</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="edithargabarang"
+									name="hargabarang" placeholder=data.hrgbarang>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-10">
+								<button type="submit" class="btn btn-default"
+									id="idBtnEdit">Submit</button>
+							</div>
+						</div>
+					</form>
+
+				</div>
+
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+	
+	
+	<script type="text/javascript">
+	$('.clBtnEdit').click(function() {
+		debugger;
+
+		$('#idModalEdit').modal('show');
+		$('#editidbarang').val($(this).attr('data.id'));
+		$('#editnamabarang').val($(this).attr('data.nmbarang'));
+		$('#edithargabarang').val($(this).attr('data.hrgbarang'));
+		$('#editkotapembuat').val($(this).attr('data.kota'));
+		$('#editjmlbarang').val($(this).attr('data.jmlbarang'));
+		$('#editjenisbarang').val($(this).attr('data.jnsbarang'));
+
+	 $('#idBtnEdit').click(function() {
+		debugger;
+		var vDatabarangE = $('#idFrmEditBarang').serialize();
+		debugger;
+ 		alert (vDatabarangE)
+ 		$.ajax({
+			url:'./editbarang',
+			data:vDatabarangE,
+			type:'PUT',
+			dataType: "json",
+			success:function(model){
+				debugger;
+				if(model.status == "Berhasil"){
+					alert ("Data berhasil disimpan");
+					$('#idModalEdit').modal('hide');
+					/* redirecting to home of barang */
+					debugger;
+					window.location = './barang'
+				}else{
+					alert ("Data salah");
+				}
+			},
+			error:function(model){
+				debugger;
+			}
+	});
+	
+		
+			
+	});
+	});
+	
+	
+	</script>
+	
+		
+		<script type="text/javascript">
+
+	$('.clBtnDelete').click(function() {
+		
+		var angka = $(this).attr('data.id')
+ 		debugger;
+ 		
+ 		$.ajax({
+			url:'./deletebarang/'+angka,
+			type:'DELETE',
+		
+			success:function(model){
+				debugger;
+				if(model.status == "Berhasil"){
+					alert ("Data berhasil disimpan");
+					
+					/* redirecting to home of barang */
+					debugger;
+					window.location = './barang'
+				}else{
+					alert ("Data salah");
+				}
+			},
+			error:function(model){
+				debugger;
+			}
+	});
+	
+		
+			
+	});
+	
+	
+	</script>
+	 
 </body>
 </html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<link rel="stylesheet" href="../styles/css/bootstrap.min.css" />
+<script type="text/javascript" src="../script/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="./styles/js/bootstrap.min.js"></script>
+<title>Transaction</title>
+</head>
+<body>
+	<div>
+		<div class="row">
+			<div class="col-md-6">
+			<div class="row">
+			<div class="col-md-3">
+			<br>
+			<ul>
+				<p>Nomor Faktur </p>
+				<p>Tanggal </p>
+				<p>Nama Kasir </p>
+			</ul>
+			</div>
+			<div class="col-md-3">
+			<br>
+			<ul>
+			<input type="text">
+			<input type="date">
+			<input type="text">
+			</ul>
+			</div>
+			</div>
+			<br>
+			<div><input type="text" placeholder="Cari">
+			<button class="btn btn-warning"><span class="glyphicon glyphicon-search"></span></button>
+			</div>
+			<br>	
+			<div class="table-responsive" id="idDivTabelTransaksi"></div>
+			</div>
+			<div class="col-md-6">
+				<div class="table-responsive">
+					<table class="table">
+						<thead>
+							<tr>
+								<td>Nama</td>
+								<td>Jumlah</td>
+								<td>SubTotal</td>
+								<td>Action</td>
+							</tr>
+						</thead>
+						<tbody id="idTabelTransaksi2">
+							<tr th:each="item : ${keybarang}">
+								<td th:text="${item.namabarang}">Nama</td>
+								<td th:text="${item.jenisbarang}">Jenis</td>
+								<td th:text="${item.hargabarang}">SubTotal</td>
+								<td th:text="${item.jmlbarang}">Jumlah</td>
+								<td>
+									<button class="btn btn-primary clBtnMin" th:data.id="${item.id}"
+										th:data.nmbarang="${item.namabarang}"
+										th:data.jmlbarang="${item.jmlbarang}"
+										th:data.jnsbarang="${item.jenisbarang}"
+										th:data.kota="${item.kotapembuat}"
+										th:data.hrgbarang="${item.hargabarang}">
+										<span class="glyphicon glyphicon-min"></span>
+									</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+		<div class="col-md-6"></div>
+		<div class="col-md-6">
+		<div class="row">
+			<div class="col-md-3">
+			<br>
+			<ul>
+				<p>Total Harga </p>
+				<p>Bayar</p>  
+				<p>Sisa </p> 
+			</ul>
+			</div>
+			<div class="col-md-3">
+			<br>
+			<ul>
+			<input type="text">
+			<input type="date">
+			<input type="text">
+			</ul>
+			<br>
+			<button class="btn btn-primary">Submit</button>
+			</div>
+			
+			</div>
+		
+		</div>
+		</div>	
+		</div>
+		<script type="text/javascript">
+		$(document).ready(function() {
+
+		$.ajax({
+		url : './listtransaction',
+		method : 'Get',
+		success : function(model) {
+
+		$('#idDivTabelTransaksi').html(model);
+		},
+		error : function(model) {
+			debugger;
+		}
+	});
+});		
+</script>
+
+</body>
+</html>

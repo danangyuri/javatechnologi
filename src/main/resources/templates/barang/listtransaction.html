@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<div class = "table-responsive">
+	<table class = "table">
+		<thead>
+			<tr>
+			 	<td>Nama</td>
+			 	<td>Jenis</td>
+			 	<td>Harga</td>
+			 	<td>Action</td>
+			</tr>
+		</thead>
+		<tbody id = "idTabelTransaksi">
+		<tr th:each="item : ${keybarang}">
+					<td th:text="${item.namabarang}">Nama</td>
+					<td th:text="${item.jenisbarang}">Jenis</td>
+					<td th:text="${item.hargabarang}">Harga</td>
+					<td>
+						<button class="btn btn-primary clBtnPlus" th:data.id="${item.id}"
+							th:data.nmbarang="${item.namabarang}"
+							th:data.jmlbarang="${item.jmlbarang}"
+							th:data.jnsbarang="${item.jenisbarang}"
+							th:data.kota="${item.kotapembuat}"
+							th:data.hrgbarang="${item.hargabarang}">
+							<span class="glyphicon glyphicon-plus"></span>
+						</button>
+					</td>
+				</tr>
+		</tbody>
+	</table>
+	</div>
+<script type="text/javascript">
+$(document).ready(function() {
+	var vJhtHtml = '';
+	
+	});
+$(".clBtnPlus").click(function(){
+	debugger;
+	var vJhtHtml = '';
+	var nama=$(this).attr('data.nmbarang');
+	var harga=$(this).attr('data.hrgbarang');
+	var jumlah=$(this).attr('data.jmlbarang');
+	 vJhtHtml = vJhtHtml +   '<tr>'+
+     '<td>' +
+         nama+
+     '</td>' +
+     '<td>' +
+         jumlah+
+     '</td>' +
+     '<td>' +
+         harga +
+     '</td>' +
+     '<td>' +
+     '<button class="btn btn-success clBtnMin"><span class="glyphicon glyphicon-minus"></span></button>'+
+ 	'</tr>';
+	 $('#idTabelTransaksi2').append(vJhtHtml);
+	});
+	
+
+</script>
+</body>
+</html>
