@@ -21,7 +21,7 @@
 					<td th:text="${item.jenisbarang}">Jenis</td>
 					<td th:text="${item.hargabarang}">Harga</td>
 					<td>
-						<button class="btn btn-primary clBtnPlus" th:data.id="${item.id}"
+						<button class="btn btn-info clBtnPlus" th:data.id="${item.id}"
 							th:data.nmbarang="${item.namabarang}"
 							th:data.jmlbarang="${item.jmlbarang}"
 							th:data.jnsbarang="${item.jenisbarang}"
@@ -35,33 +35,99 @@
 	</table>
 	</div>
 <script type="text/javascript">
-$(document).ready(function() {
-	var vJhtHtml = '';
-	
-	});
-$(".clBtnPlus").click(function(){
-	debugger;
-	var vJhtHtml = '';
-	var nama=$(this).attr('data.nmbarang');
-	var harga=$(this).attr('data.hrgbarang');
-	var jumlah=$(this).attr('data.jmlbarang');
-	 vJhtHtml = vJhtHtml +   '<tr>'+
-     '<td>' +
-         nama+
-     '</td>' +
-     '<td>' +
-         jumlah+
-     '</td>' +
-     '<td>' +
-         harga +
-     '</td>' +
-     '<td>' +
-     '<button class="btn btn-success clBtnMin"><span class="glyphicon glyphicon-minus"></span></button>'+
- 	'</tr>';
-	 $('#idTabelTransaksi2').append(vJhtHtml);
-	});
-	
 
+
+$('.clBtnPlus').click(function(){
+	debugger;
+	var vCekId = true;
+	var vJhtHtml = '';
+	var id=$(this).attr('data.id');
+	var nama=$(this).attr('data.nmbarang');
+	var jumlah=$(this).attr('data.jmlbarang');
+	var harga=$(this).attr('data.hrgbarang');
+	reIndexTable();
+	var vTotHarga=0;
+	var vTotHarga2=0;
+	var vStrHtmlTrasaksi ='';
+	debugger;
+	//Untuk setiap kelas nama barang yang sudah dibuat pada script dibawah, maka:
+		$('.clNmBarang').each(function (i, d) {
+			//Jika id barang yang disimpan pada tombol sama dengan id pada kelas yang sudah dibuat, maka:
+			if (id == ($(this).attr('dataID'))) {
+				vCekId = false;
+                
+            	vJmlBarang = $(this).parent().parent().find('td input:text.clJmlBarang').val();
+            	vJmlBarang++;
+            	$(this).parent().parent().find('td input:text.clJmlBarang').val(vJmlBarang);
+            	harga = vJmlBarang * harga;
+            	$(this).parent().parent().find('td input:text.clHargaBarang').val(harga);
+            	
+            	$('.clTotHarga').val(harga);
+            	
+            	debugger;
+			}
+		});
+		if (vCekId == true) {
+			debugger;
+    		//vJmlBarang = 1;
+    		vStrHtmlTrasaksi = vStrHtmlTrasaksi +
+        	'<tr>' +
+            '<td>' +
+                '<input type="text" class="clNmBarang" dataID="' + id + '" value="' + nama + '" />' +
+                '<input type="hidden" name="TrxDetail[0].BarangID"  value="' + id + '" />' +
+            '</td>' +
+            '<td><input type="text" class="clJmlBarang" value="' + 1 + '" /></td>' +
+            '<td><input type="text" class="clHargaBarang" value=" ' + harga + '" /></td>' +
+            '<td><button type = "button" class="btn btn-danger clBtnDeleteBrang"  > - </button></td>' +
+        	'</tr>';
+        	
+    		$('#idTabelTransaksi2').append(vStrHtmlTrasaksi);
+    		$('.clHargaBarang').each(function (i, d) {
+    			if(id == ($(this).attr('dataID'))){
+    				vCekId=false;
+    				vTotHarga=parseInt((this).val())+vTotHarga;
+        			$('.clTotHarga').val(vTotHarga);
+        			
+    			}
+    			else{
+    				$('.clTotHarga').val(harga+vTotHarga)
+    			}
+    			
+    		});
+    		
+    		
+    		reIndexTable();
+		}else{
+			debugger;
+			vCekId=true;
+			vTotHarga2=harga+vTotHarga;
+			$('.clTotHarga').val(vTotHarga2);
+		}
+		
+		$('.clBtnDeleteBrang').click(function () {
+			$(this).parent().parent().remove();
+			
+        	reIndexTable();
+        	debugger;
+    	});
+		
+});
+function reIndexTable() {
+	var rowCount = $('#idTabelTransaksi2 tr').length;
+    debugger;
+
+    if (rowCount > 0) {
+    	var idx = 0;
+        $.each($("#idTabelTransaksi2").find("tr"), function (i, val) {
+            //alert(idx);
+            var vIdBarang = $(this).find(":input[name*='.BarangID']");
+            debugger;
+            $(vIdBarang).attr("name", vIdBarang.attr("name").replace(/\[.*?]\s?/g, "[" + idx + "]"));
+
+            idx += 1;
+     	   });
+    }
+}
 </script>
 </body>
 </html>
