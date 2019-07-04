@@ -6,3 +6,4 @@ import com.xsis.model.Barang;
 public interface BarangRepo extends JpaRepository<Barang, Long> {
 
 }
+

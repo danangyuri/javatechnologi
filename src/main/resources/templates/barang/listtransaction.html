@@ -2,11 +2,12 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
+
 <title>Insert title here</title>
 </head>
 <body>
 <div class = "table-responsive">
-	<table class = "table">
+	<table class = "table" id="idTabelListTransaksi">
 		<thead>
 			<tr>
 			 	<td>Nama</td>
@@ -21,7 +22,7 @@
 					<td th:text="${item.jenisbarang}">Jenis</td>
 					<td th:text="${item.hargabarang}">Harga</td>
 					<td>
-						<button class="btn btn-info clBtnPlus" th:data.id="${item.id}"
+						<button type="button" class="btn btn-info clBtnPlus" th:data.id="${item.id}"
 							th:data.nmbarang="${item.namabarang}"
 							th:data.jmlbarang="${item.jmlbarang}"
 							th:data.jnsbarang="${item.jenisbarang}"
@@ -36,7 +37,6 @@
 	</div>
 <script type="text/javascript">
 
-
 $('.clBtnPlus').click(function(){
 	debugger;
 	var vCekId = true;
@@ -47,7 +47,6 @@ $('.clBtnPlus').click(function(){
 	var harga=$(this).attr('data.hrgbarang');
 	reIndexTable();
 	var vTotHarga=0;
-	var vTotHarga2=0;
 	var vStrHtmlTrasaksi ='';
 	debugger;
 	//Untuk setiap kelas nama barang yang sudah dibuat pada script dibawah, maka:
@@ -62,11 +61,9 @@ $('.clBtnPlus').click(function(){
             	harga = vJmlBarang * harga;
             	$(this).parent().parent().find('td input:text.clHargaBarang').val(harga);
             	
-            	$('.clTotHarga').val(harga);
-            	
-            	debugger;
 			}
 		});
+
 		if (vCekId == true) {
 			debugger;
     		//vJmlBarang = 1;
@@ -82,52 +79,80 @@ $('.clBtnPlus').click(function(){
         	'</tr>';
         	
     		$('#idTabelTransaksi2').append(vStrHtmlTrasaksi);
-    		$('.clHargaBarang').each(function (i, d) {
-    			if(id == ($(this).attr('dataID'))){
-    				vCekId=false;
-    				vTotHarga=parseInt((this).val())+vTotHarga;
-        			$('.clTotHarga').val(vTotHarga);
-        			
-    			}
-    			else{
-    				$('.clTotHarga').val(harga+vTotHarga)
-    			}
+    		$('.clHargaBarang').each(function(i,d){
+    			vTotHarga=parseInt($(this).val())+vTotHarga;
+    			$('#idTotalHarga').val(vTotHarga);
     			
     		});
-    		
-    		
+    	
+    		debugger;
     		reIndexTable();
 		}else{
 			debugger;
 			vCekId=true;
-			vTotHarga2=harga+vTotHarga;
-			$('.clTotHarga').val(vTotHarga2);
+			
+			$('#idTabelTransaksi2').append(vStrHtmlTrasaksi);
+    		$('.clHargaBarang').each(function(i,d){
+    			vTotHarga=parseInt($(this).val())+vTotHarga;
+    			$('#idTotalHarga').val(vTotHarga);
+    			
+    		});
+    		
+    		debugger;
+		
 		}
 		
 		$('.clBtnDeleteBrang').click(function () {
 			$(this).parent().parent().remove();
+			
 			
         	reIndexTable();
         	debugger;
     	});
 		
 });
+
 function reIndexTable() {
 	var rowCount = $('#idTabelTransaksi2 tr').length;
     debugger;
-
     if (rowCount > 0) {
     	var idx = 0;
         $.each($("#idTabelTransaksi2").find("tr"), function (i, val) {
-            //alert(idx);
+        	//alert(idx);
             var vIdBarang = $(this).find(":input[name*='.BarangID']");
             debugger;
             $(vIdBarang).attr("name", vIdBarang.attr("name").replace(/\[.*?]\s?/g, "[" + idx + "]"));
 
             idx += 1;
-     	   });
+     	  
+        });
     }
 }
+$(document).ready(function() {
+	$('#idTabelListTransaksi').DataTable();
+	
+});
+
+$('#idBayar').on('keypress',function(e) {
+		var vSisaBayar=0;
+	    if(e.which == 13) {
+	        debugger;
+	        var vBayar=document.getElementById('idBayar').value;
+	        var vTotalHarga=document.getElementById('idTotalHarga').value;
+	        vSisaBayar=(vBayar-vTotalHarga);
+	        if(vSisaBayar<0){
+	        	$('#idSisa').val("UANG ANDA KURANG");
+	        	debugger;
+	        }else if(vSisaBayar>=0){
+	        	$('#idSisa').val(vSisaBayar);
+	        	debugger;
+	        }
+	    }
+	});
+	
+    
+    	
+            
 </script>
 </body>
 </html>

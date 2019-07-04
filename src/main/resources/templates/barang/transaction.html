@@ -2,12 +2,18 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<link rel="stylesheet" href="../styles/css/bootstrap.min.css" />
+<link rel="stylesheet" href="../styles/css/bootstrap.min.css" >
+<link rel="stylesheet" href="../css/jquery.dataTables.min.css" >
+<link rel="stylesheet" href="../Content/jquery-ui.min.css">
 <script type="text/javascript" src="../script/jquery-3.4.1.min.js"></script>
-<script type="text/javascript" src="./styles/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../styles/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="../js/jquery-ui.min.js"></script>
+
 <title>Transaction</title>
 </head>
 <body>
+<form id="idFormTransaction">
 <ul>
 	<div>
 		<div class="row">
@@ -22,15 +28,15 @@
 			<div class="col-md-3">
 			<br>
 			<ul>
-			<input type="text">
-			<input type="date">
-			<input type="text">
+			<input type="text" name="nofaktur">
+			<input type="text" name="tglpenjualan" class="form-control" id="idInpTglPenjualan" placeholder="Tanggal Penjualan">
+			<input type="text" name="namakasir">
 			</ul>
 			</div>
 			</div>
 			<br>
 			<div><input type="text" placeholder="Cari">
-			<button class="btn btn-warning"><span class="glyphicon glyphicon-search"></span></button>
+			<button type="button" class="btn btn-warning"><span class="glyphicon glyphicon-search"></span></button>
 			</div>
 			<br>	
 			<div class="table-responsive" id="idDivTabelTransaksi"></div>
@@ -60,12 +66,12 @@
 			<div class="col-md-3">
 			<br>
 			<ul>
-			<input type="text" class="clTotHarga" />
-			<input type="text">
-			<input type="text">
+			<input type="text" name="total" id="idTotalHarga" readonly>
+			<input type="text" name="bayar" id="idBayar">
+			<input type="text" id="idSisa" name="returncash" readonly>
 			</ul>
 			<br>
-			<button class="btn btn-primary">Submit</button>
+			<button type="button" class="btn btn-primary clBtnSubmit">Submit</button>
 			</div>
 			</div>
 		</div>
@@ -73,27 +79,68 @@
 		
 		<script type="text/javascript">
 		
-		$(document).ready(function() {
 		
-		$.ajax({
-		url : './listtransaction',
-		method : 'GET',
-		success : function(model) {
-		debugger;
-		$('#idDivTabelTransaksi').html(model);
-		},
-		error : function(model) {
-			debugger;
-		}
-	});
+			
+			
+		
+			$(document).ready(function() {
+				
 
-		
-		
-});	
-		
-		
-		
-</script>
+				$.ajax({
+					url : './listtransaction',
+					method : 'GET',
+					success : function(model) {
+						debugger;
+						$('#idDivTabelTransaksi').html(model);
+					},
+					error : function(model) {
+						debugger;
+					}
+				});
+				  
+			});
+	       
+	        
+			$('.clBtnSubmit').click(function() {
+				debugger;
+				var vDatatransaksi = $('#idFormTransaction').serialize();
+				debugger;
+				$.ajax({
+					url : './submit',
+					data : vDatatransaksi,
+					type : 'POST',
+					dataType : "json",
+					success : function(model) {
+						if(model.status == "Berhasil"){
+							alert ("Data berhasil disimpan");
+							
+							/* redirecting to home of barang */
+							debugger;
+							window.location = './transaction'
+						}else{
+							alert ("Data salah");
+						}
+						
+					},
+					error : function(model) {
+						debugger;
+					}
+
+				});
+
+			});
+			 $("#idInpTglPenjualan").datepicker({
+	                minDate: 0, 
+	                dateFormat: "dd-mm-yy"
+	            }).datepicker("setDate", new Date());
+	   			debugger;
+	   			
+	   			
+
+
+
+		</script>
 </ul>
+</form>
 </body>
 </html>
